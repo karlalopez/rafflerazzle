@@ -1,0 +1,332 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Rafflerazzle by karlalopez</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-dark.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>Rafflerazzle</h1>
+        <p>Twilio raffle manager</p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/karlalopez/rafflerazzle" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/karlalopez/rafflerazzle/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/karlalopez/rafflerazzle/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>
+<a id="rafflerazzle" class="anchor" href="#rafflerazzle" aria-hidden="true"><span class="octicon octicon-link"></span></a>rafflerazzle</h1>
+
+<h2>
+<a id="work-in-progress-" class="anchor" href="#work-in-progress-" aria-hidden="true"><span class="octicon octicon-link"></span></a>WORK IN PROGRESS! :)</h2>
+
+<p>Please leave your comments and suggestions. Feedback and pull requests are very welcome.</p>
+
+<p>This is a raffle manager.</p>
+
+<p>Let's say you run a local meetup, and every meetup you raffle a prize to your participants.This app is supposed to help you keep track of you raffles and participants, using Twilio to handle the communication.</p>
+
+<h3>
+<a id="how-it-works" class="anchor" href="#how-it-works" aria-hidden="true"><span class="octicon octicon-link"></span></a>How it works</h3>
+
+<p>The raffle home is in <code>/</code>. From there, participants find the number they have to text to enter the raffle.</p>
+
+<p>The background image used on the raffle home is <code>/static/images/cover.png</code>. The one in the repo is from <a href="https://www.flickr.com/photos/wocintechchat">WOCin Tech Chat</a> and it is free to use.</p>
+
+<p>The Admin page is <code>/admin</code>.</p>
+
+<h3>
+<a id="some-rules" class="anchor" href="#some-rules" aria-hidden="true"><span class="octicon octicon-link"></span></a>Some rules</h3>
+
+<ul>
+<li>You can't delete a winner</li>
+<li>You can't delete a closed raffle</li>
+<li>You can't have 2 raffles at the same time.</li>
+<li>After a raffle is closed it will wait for you to draw a winner. You can do it from Admin home, Admin Raffles, or Raffle page.</li>
+</ul>
+
+<h3>
+<a id="improvements-to-come-soon" class="anchor" href="#improvements-to-come-soon" aria-hidden="true"><span class="octicon octicon-link"></span></a>Improvements to come soon</h3>
+
+<ul>
+<li>Download participants list in CSV</li>
+<li>Automaticly contact winner via text message</li>
+<li>Make it possible to automaticly draw winner when the raffle ends, if the Admin wants to.</li>
+</ul>
+
+<h2>
+<a id="running-locally" class="anchor" href="#running-locally" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running locally</h2>
+
+<p>For this app, you will need Mailgun and Twilio.</p>
+
+<ul>
+<li><p>Sign up for Mailgun free account at <a href="https://mailgun.com">https://mailgun.com</a>. You’ll need a few pieces of information from the Mailgun control panel before moving forward:</p></li>
+</ul>
+
+<ol>
+<li>API Key</li>
+<li><p>Sandbox Domain URL (should look like "sandboxc6235728hdkjehf283hajf13a90679.mailgun.org"
+Both of these pieces of information can be found on the landing page of the Mailgun control panel.</p></li>
+</ol>
+
+<ul>
+<li>Sign up for <a href="https://www.twilio.com/try-twilio">Twilio</a>. Go to your <a href="https://www.twilio.com/user/account/phone-numbers/incoming">account page</a> and get the phone number listed there.</li>
+</ul>
+
+<p>Now that you have everything you need, we will keep your precious keys and number as environment variables. </p>
+
+<p>Your SECRET_KEY is not from any external service. It is like a password. Use any password you want.</p>
+
+<ul>
+<li>On Terminal:</li>
+</ul>
+
+<pre><code>$ export SECRET_KEY="YOUR_SECRETKEY"
+$ export MAILGUN_SANDBOX_DOMAIN_URL="YOUR_SANDBOX_URL"
+$ export MAILGUN_API_KEY="YOUR_API_KEY"
+$ export SECRET_KEY="YOUR_SECRET_KEY"
+$ export TWILIO_NUMBER="+55555555555"
+</code></pre>
+
+<p>Note that the "export" is limited to the Terminal window you have open. You have to re-export every time you open a new window. (If this gets frustrating, see if you can figure out <a href="https://github.com/kennethreitz/autoenv">autoenv.</a>)</p>
+
+<ul>
+<li><p>Install Postgres:
+Mac - <a href="http://postgresapp.com/">http://postgresapp.com/</a>
+Windows - <a href="http://www.postgresql.org/download/windows/">http://www.postgresql.org/download/windows/</a>
+Ubuntu - 'apt-get install postgresql'.</p></li>
+<li><p>On Terminal, start psql typing:</p></li>
+</ul>
+
+<pre><code>$ psql
+</code></pre>
+
+<ul>
+<li>Now create the database:</li>
+</ul>
+
+<pre><code>create database raffle;
+</code></pre>
+
+<ul>
+<li>To exit postgres just type:</li>
+</ul>
+
+<pre><code>\q
+</code></pre>
+
+<ul>
+<li>Run the following code to install required dependencies:</li>
+</ul>
+
+<p><code>$ sudo pip install -r requirements.txt</code></p>
+
+<p><code>models.py</code> creates the tables in the database. Before you run it, comment this 2 lines on <code>app.py</code>:</p>
+
+<pre><code>from views import *
+del session
+</code></pre>
+
+<ul>
+<li>Run <code>models.py</code> on Terminal, to create the tables in the database:</li>
+</ul>
+
+<p><code>$ python models.py</code></p>
+
+<p>It will ask you for your email to create the first Admin user. Copy the <em>temporary password</em> given. You will need that to login and have access to <code>/admin</code></p>
+
+<ul>
+<li><p>Uncomment those 2 lines before you move forward.</p></li>
+<li><p>Run <code>app.py</code> and go to <a href="http://127.0.0.1/login">http://127.0.0.1/login</a> to change your password.</p></li>
+</ul>
+
+<p>You're good to go.</p>
+
+<p>In case you want to populate the database with some data to make testing easier,
+ you can run <code>populate.py</code>.</p>
+
+<p><code>$ python populate.py</code></p>
+
+<p>It will create an active, a closed, and an upcoming raffle. All of them with 50 bogus participants.</p>
+
+<ul>
+<li>IMPORTANT:* To send and receive text messages, the app needs to be on server exposed to the public Internet, so Twilio can find it. Please find below instructions to do it using Heroku.</li>
+</ul>
+
+<h2>
+<a id="deploying-it-to-heroku" class="anchor" href="#deploying-it-to-heroku" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deploying it to Heroku</h2>
+
+<ul>
+<li><p>First, create a Heroku account: <a href="https://signup.heroku.com/">https://signup.heroku.com/</a></p></li>
+<li><p>Install the Heroku Toolbelt: <a href="https://toolbelt.heroku.com/">https://toolbelt.heroku.com/</a></p></li>
+<li><p>Login to Heroku on Terminal:</p></li>
+</ul>
+
+<pre><code>$ heroku login
+Enter your Heroku credentials.
+Email: your@email.com
+Password:
+Authentication successful.
+</code></pre>
+
+<ul>
+<li>Create the app, along with a git remote that must be used to receive your application source:</li>
+</ul>
+
+<p><code>$ heroku apps:create your_app_name</code></p>
+
+<p>Basically what happens here is that now you have one more remote git repo. If you list ou remote repos, you will see your Github and your Heroku repos:</p>
+
+<p><code>$ git remote -v</code></p>
+
+<ul>
+<li>Again, let's keep your keys and number as environment variables, this time at Heroku:</li>
+</ul>
+
+<pre><code>$ heroku config:set MAILGUN_SANDBOX_DOMAIN_URL="YOUR_SANDBOX_URL"
+$ heroku config:set MAILGUN_API_KEY="YOUR_API_KEY"
+$ heroku config:set TWILIO_NUMBER="+55555555555"
+$ heroku config:add SECRET_KEY="YOUR_SECRET_KEY"
+$ heroku config:add TWILIO_NUMBER="YOUR_TWILIO_NUMBER"
+</code></pre>
+
+<ul>
+<li>Now let's set your <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">timezone</a>:</li>
+</ul>
+
+<p><code>$ heroku config:add TZ="YOUR_TIME_ZONE"</code></p>
+
+<p>This is important because the raffles are time based. If you don't set it right, they won't work as expected.</p>
+
+<p>Now, enable the PostgreSQL addon. This level is free but does have size and speed limitations (more details). <a href="https://elements.heroku.com/addons/heroku-postgresql">https://elements.heroku.com/addons/heroku-postgresql</a></p>
+
+<p><code>$ heroku addons:create heroku-postgresql:hobby-dev</code></p>
+
+<p>When you've done this you should notice that it sets a variable on Heroku called DATABASE_URL. Check with heroku config. </p>
+
+<p><code>$ heroku config</code></p>
+
+<p>This variable is in <code>app.py</code>:</p>
+
+<pre><code>app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://localhost/raffle')
+db = SQLAlchemy(app)
+</code></pre>
+
+<p>It means that when you run <code>app.py</code> locally, it will look for DATABASE_URL, fail, then look for the database on localhost.</p>
+
+<p>Before you run <code>models.py</code> to create the tables in the database, don't forget to comment this 2 lines on <code>app.py</code>:</p>
+
+<pre><code>from views import *
+del session
+</code></pre>
+
+<ul>
+<li>Stage, commit and then push to Heroku:</li>
+</ul>
+
+<pre><code>$ git push heroku
+</code></pre>
+
+<p>Now every time you push something to Github with <code>git push</code>, you will have to push again to Heroku with <code>git push heroku</code> if you want it deployed. You can setup a <a href="https://devcenter.heroku.com/articles/github-integration">Github/Heroku integration</a> if you want to automate this process.</p>
+
+<ul>
+<li>Run <code>models.py</code> to create the tables in the database:</li>
+</ul>
+
+<p><code>$ heroku run python models.py</code></p>
+
+<p>Same thing: It will ask you for your email to create the first Admin user. Copy the <em>temporary password</em> given. You will need that to login and have access to <code>/admin</code>.</p>
+
+<ul>
+<li>Uncomment those 2 lines in <code>app.py</code> before you move forward.</li>
+</ul>
+
+<pre><code>from views import *
+del session
+</code></pre>
+
+<ul>
+<li>Stage, commit and then push to Heroku:</li>
+</ul>
+
+<p><code>$ git push heroku</code></p>
+
+<p>The response will look like this:</p>
+
+<pre><code>Counting objects: 4, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 373 bytes | 0 bytes/s, done.
+Total 4 (delta 3), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote:
+remote: -----&gt; Using set buildpack heroku/python
+remote: -----&gt; Python app detected
+remote: -----&gt; Installing dependencies with pip
+remote:
+remote:
+remote: -----&gt; Discovering process types
+remote:        Procfile declares types -&gt; web
+remote:
+remote: -----&gt; Compressing... done, 41.4MB
+remote: -----&gt; Launching... done, v18
+remote:        https://your_app_name.herokuapp.com/ deployed to Heroku
+remote:
+remote: Verifying deploy... done.
+</code></pre>
+
+<p>Go to <a href="https://your_app_name.herokuapp.com/login">https://your_app_name.herokuapp.com/login</a> and you should be able to login.</p>
+
+<p>If you want to populate the database: </p>
+
+<p><code>$ heroku run python populate.py</code></p>
+
+<p>Happy raffles!</p>
+
+<p>Special thanks to Jennie Lees. Good chuncks of this documentation have been written based on her tutorials. Visit her portfolio: <a href="http://jennielees.github.io">http://jennielees.github.io</a>.</p>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/karlalopez">karlalopez</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-71837581-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
