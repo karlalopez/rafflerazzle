@@ -1,0 +1,71 @@
+  {% include 'header.html' %}
+
+    <link href="../../static/css/dashboard.css" rel="stylesheet">
+
+  {% include 'navbar.html' %}
+
+    <div class="container-fluid">
+      <div class="row">
+        
+        {% include 'sidebar.html' %}
+        
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          {% if error %}
+              <div class="alert alert-danger" role="alert">
+
+                  Error:
+
+                  {{ error }}
+
+              </div>
+          {% endif %}
+
+              <h2> Participants </h2>
+              <div class="page-header"> 
+              </div>
+
+              <div class="table-responsive">
+                 <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Phone</th>
+                        <th>Date created</th>
+                        <th>Winner?</th>
+                        <th>Raffle</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for participant in participants %}                          
+                          <tr>
+                            <td>{{loop.index}}</td>
+                            <td>{{participant.phone}}</td>
+                            <td>{{participant.dt_created.strftime('%d-%m-%Y %I:%M %p')}}</td>
+                            <td>
+                                {% if participant.id in winners %}
+                                  <a style="color:blue"> <b> YES! </b></a>
+                                                        </td>
+                            <td><a href="/admin/raffle/{{participant.raffle_id}}"class="btn btn-info">More...</a></td>
+                            <td>                              
+                            
+                            </td>      
+                                {% else %}
+                                                        </td>
+                            <td><a href="/admin/raffle/{{participant.raffle_id}}"class="btn btn-info">More...</a></td>
+                            <td>                              
+                              <a href="/admin/participant-delete/{{participant.id}}" class="btn btn-danger"> Delete participant</a>
+                            </td>
+    
+                                {% endif %}
+                          </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+              </div>
+        </div>
+      </div>
+    </div>
+
+
+{% include 'footer.html' %}

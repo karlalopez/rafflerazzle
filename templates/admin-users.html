@@ -1,0 +1,79 @@
+  {% include 'header.html' %}
+
+    <link href="../../static/css/dashboard.css" rel="stylesheet">
+
+  {% include 'navbar.html' %}
+
+    <div class="container-fluid">
+      <div class="row">
+        
+        {% include 'sidebar.html' %}
+        
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          {% if error %}
+              <div class="alert alert-danger" role="alert">
+
+                  Error:
+
+                  {{ error }}
+
+              </div>
+          {% endif %}
+
+              <h2> Users </h2>
+              <div class="page-header"> 
+                <div class="row">
+                  <div class="col-md-6 col-md-offset-9">
+                    <div class="form-group form-inline">
+                      <form method="POST" action="/admin/users">
+                        <label for="email" class="sr-only">Email address</label>
+                        {{ form.email(class="form-inline form-control", placeholder="Email address", required="true") }}
+                        <button class="form-control form-inline btn btn-md btn-primary btn-block" type="submit">Add user</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+
+              <div class="table-responsive">
+                 <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Email</th>
+                        <th>Date created</th>
+                        <th>Confirmed?</th>
+                        <th>Action</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for user in users %}
+                          <tr>
+                            <td>{{loop.index}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.dt_created.strftime('%d-%m-%Y')}}</td>
+                            <td>
+                                {% if user.email_confirmed == False %}
+                                  <a style="color:red"> No</a>
+                                {% else %}
+                                  Yes
+                                {% endif %}
+                            </td>
+                            <td>
+                              {% if user.email != current_user.email %}
+                              <a href="/admin/user-delete/{{user.id}}" class="btn btn-danger">Delete user</a>
+                              {% endif %}
+                            </td>
+                          </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+              </div>
+        </div>
+      </div>
+    </div>
+
+{% include 'footer.html' %}

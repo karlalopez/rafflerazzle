@@ -1,0 +1,154 @@
+  {% include 'header.html' %}
+
+    <link href="../../static/css/dashboard.css" rel="stylesheet">
+
+  {% include 'navbar.html' %}
+
+    <div class="container-fluid">
+      <div class="row">
+        
+        {% include 'sidebar.html' %}
+        
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          {% if error %}
+              <div class="alert alert-danger" role="alert">
+
+                  Error:
+
+                  {{ error }}
+
+              </div>
+          {% endif %}
+
+              <h2> Raffles </h2>
+
+              <div class="page-header"> 
+
+              </div>
+              <div class="row">
+                <form action="/admin/raffle/{{raffle.id}}" method="POST">
+                    <div class='col-md-4'>
+                      <div class="form-group">
+                          <label for="raffle_prize">Prize </label>
+                          <input  class="form-control" id="raffle_prize" name="raffle_prize" type="text" placeholder="Prize" value="{{raffle.prize}}" required />
+                      </div>
+                    </div>
+                    <div class='col-md-4'>
+                        <div class="form-group">
+                                <label for="raffle_dt_start">Start date </label>
+                                <input type='text' class="form-control" name='raffle_dt_start'  value="{{raffle.dt_start.strftime('%m-%d-%Y %I:%M %p')}}" required id='dt_start'/>
+                        </div>
+                    </div>
+                    <div class='col-md-4'>
+                        <div class="form-group">
+                                <label for="raffle_dt_end">End date </label>
+                                <input type='text' class="form-control" name='raffle_dt_end' 
+                                value="{{raffle.dt_end.strftime('%m-%d-%Y %I:%M %p')}}"
+                                required id='dt_end'/>
+                        </div>
+                    </div>
+              </div>
+              <div class ="row">  
+                  <div class='col-md-6'>
+                    {% if raffle.dt_end > now %}
+                      <a href="/admin/raffle/delete/{{raffle.id}}" class="btn btn-danger" />
+                      Delete raffle</a>
+                    {% else %}
+                      <p class="bg-warning text-warning" style="padding:5px;">Rafle closed</p>
+                      {% if winner_contact %}
+                        <b>Winner:</b> {{winner_contact.phone}}
+                      {% endif%}
+                    {% endif %}
+                  </div>  
+
+                  <div class='col-md-6 text-right'>
+                    <input type="submit" value="Update" class="btn btn-success" />
+                    </form>
+
+                    {% if raffle.dt_end < now and winner_contact == False %}<p>
+                    <form method="POST" action="/admin/draw/{{raffle.id}}">
+                      <input type="submit" value="Draw winner" class="btn btn-danger" />
+                    </form>
+                    {% endif%}
+
+                  </div>  
+              </div>
+              <hr>
+              <div class ="row">  
+                <div class="table-responsive">
+                   <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>#</td>
+                          <th>Phone</td>
+                          <th>Date created</td>
+                          <th>Winner?</td>
+                          <th>Action</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for participant in participants %}
+                            <tr>
+                              <td>{{loop.index}}</td>
+                              <td>{{participant.phone}}</td>
+                              <td>{{participant.dt_created.strftime('%d-%m-%Y %I:%M %p')}}</td>
+                              <td>
+                                  {% if participant.id == winner.participant_id %}
+                                    <a style="color:blue"> <b> YES! </b></a>
+                                    </td>                             
+                                    <td>  </td>
+                                  {% else %}
+                                    </td> 
+                                    <td>                            
+                                    <a href="/admin/participant-delete/{{participant.id}}" class="btn btn-danger"> Delete participant</a>
+                                    </td>
+                                  {% endif %}
+                              
+                            </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                </div>        
+      </div>
+    </div>
+
+  <script type="text/javascript">
+
+      $(function () {
+          $('#dt_start').datetimepicker();
+          var startDate="{{raffle.dt_start.strftime('%m-%d-%Y %I:%M %p')}}";
+          $("#dp_start").val(startDate);
+          $('#dt_end').datetimepicker();
+          var endDate="{{raffle.dt_end.strftime('%m-%d-%Y %I:%M %p')}}";
+          $("#dp_end").val(endDate);
+          $("#dt_start").on("dp.change", function (e) {
+              $('#dt_end').data("DateTimePicker").minDate(e.date);
+          });
+          $("#dt_end").on("dp.change", function (e) {
+              $('#dt_start').data("DateTimePicker").maxDate(e.date);
+          });
+
+
+
+      });
+
+  </script> 
+
+    <script>
+  $(function(){
+      $('.table tr[data-href]').each(function(){
+          $(this).css('cursor','pointer').hover(
+              function(){ 
+                  $(this).addClass('active'); 
+              },  
+              function(){ 
+                  $(this).removeClass('active'); 
+              }).click( function(){ 
+                  document.location = $(this).attr('data-href'); 
+              }
+          );
+      });
+  });
+  </script>
+
+{% include 'footer.html' %}

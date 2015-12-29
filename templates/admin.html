@@ -1,0 +1,102 @@
+  {% include 'header.html' %}
+
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+
+  {% include 'navbar.html' %}
+
+    <script src="/static/js/Chart.js"></script>
+
+    <div class="container-fluid">
+      <div class="row">
+        
+        {% include 'sidebar.html' %}
+        
+        {% if error %}
+          <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+              <div class="alert alert-danger" role="alert">
+
+                  {{ error }}
+
+              </div>
+          </div>
+        {% endif %}
+        
+        <div class="col-md-9 col-md-offset-2 main">
+          <div class="page-header">
+            <h2>Summary</h2>
+          </div>
+          <div class="row">
+            <div class="col-md-4 col-sm-3">
+                <h3>Active raffle</h3>
+                {% if raffle %}  
+                  <p> <b>Total participants:</b> {{participants_number}}</p>
+                  <p> <b>Raffle deadline:</b> {{raffle.dt_end.strftime('%d-%m-%Y %I:%M %p')}} </p>
+                {% else%}
+                  <div>No active raffles!</div><p>
+                {% endif%}
+            </div>
+            <div class="col-md-4 col-sm-3">
+              
+              <h3>Closed raffles</h3>
+              {% if closed_raffles %}  
+                  {% for raffle in closed_raffles%}
+                      {% if raffle.id in raffle_winners %}
+                        <li><a href="/admin/raffle/{{raffle.id}}"/> {{raffle.dt_start.strftime('%d-%m-%Y %I:%M %p')}}</a></li><p>
+                      {% else %}
+                      <div class="form-group form-inline">
+                        <form method="POST" action="/admin/draw/{{raffle.id}}">
+                          <li><a href="/admin/raffle/{{raffle.id}}"/> {{raffle.dt_start.strftime('%d-%m-%Y %I:%M %p')}}</a>
+                          <button class="btn btn-sm btn-danger form-control form-inline btn-block" type="submit">Draw</button></li>
+                          </form>
+                    </div>
+                        <p>
+                      {% endif %}
+                  {% endfor %}
+              {% else %}
+                  <div>No closed raffles.</div><p>
+              {% endif %}
+            </div>
+            <div class="col-md-4 col-sm-3">
+              
+              <h3>Upcoming raffles</h3>
+              {% if upcoming_raffles %}  
+                  {% for raffle in upcoming_raffles%}
+                    <li><a href="/admin/raffle/{{raffle.id}}"/> {{raffle.dt_start.strftime('%d-%m-%Y %I:%M %p')}}</a></li><p>
+                  {% endfor %}
+                    <p><a href="/admin/raffles" class="btn btn-info" />Start new one</a></p>
+              {% else %}
+                  <div>No upcoming raffles!</div><p>
+                  <p><a href="/admin/raffles" class="btn btn-info" />Start one</a></p>
+              {% endif %}
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-12 col-sm-8">
+              <h3>Latest participants</h3>
+
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Phone</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for participant in participants %}
+                    <tr>
+                      <td>{{participant.phone}}</td>
+                      <td>{{participant.dt_created.strftime('%d-%m-%Y %I:%M %p')}}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>  
+
+          </div>
+      </div>
+    </div>
+
+{% include 'footer.html' %}

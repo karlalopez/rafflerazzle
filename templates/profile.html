@@ -1,0 +1,89 @@
+{% include 'header.html' %}
+
+  <link href="/static/css/signin.css" rel="stylesheet">
+
+  {% include 'navbar.html' %}
+
+  <div class="container">
+
+    <div class="row">
+
+      {% if error %}
+          <div class="alert alert-danger" role="alert">
+
+          A problem ocurred:
+
+          {{ error }}
+
+          </div>
+      {% endif %}
+
+      {% if message %}
+          <div class="alert alert-success" role="alert">
+
+          {{ message }}
+
+          </div>
+      {% endif %}
+
+      <div class="starter-template">
+
+        {% if current_user.email_confirmed == False %}
+          <p>Your email has not been confirmed yet. </p>
+          <a href="/email_confirmation" class="btn btn-success"> Resend email confirmation</a>
+        {% endif %}
+
+        <form class="form-signin" method="POST" action="/admin/profile">
+          <h2 class="form-signin-heading">Change password</h2>
+
+          <label for="old_password" class="sr-only">Old Password</label>
+          {{ form.old_password(class="form-control", id="pass", placeholder="Old password", required="true") }}
+          <p>
+          <label for="new_password" class="sr-only">Password</label>
+          {{ form.new_password(class="form-control", id="pass1", placeholder="New password", required="true") }}
+          <p>
+          <label for="confirm" class="sr-only">Confirm new password</label>
+          {{ form.confirm(class="form-control", id="pass2", placeholder="Confirm new password", onkeyup="checkPass(); return false;", required="true") }}
+          <p><span id="confirmMessage" class="confirmMessage"></span></p>
+
+          <p><input type="submit" value="Change password" class="btn btn-primary"></i></p>
+        </form>
+
+      </div>
+    
+    </div>
+  
+  </div>
+  
+  <script>
+  function checkPass()
+  {
+      //Store the password field objects into variables ...
+      var pass1 = document.getElementById('pass1');
+      var pass2 = document.getElementById('pass2');
+      //Store the Confimation Message Object ...
+      var message = document.getElementById('confirmMessage');
+      //Set the colors we will be using ...
+      var goodColor = "#66cc66";
+      var badColor = "#ff6666";
+      //Compare the values in the password field
+      //and the confirmation field
+      if(pass1.value == pass2.value){
+          //The passwords match.
+          //Set the color to the good color and inform
+          //the user that they have entered the correct password
+          pass2.style.backgroundColor = goodColor;
+          message.style.color = goodColor;
+          message.innerHTML = "Passwords Match!"
+      }else{
+          //The passwords do not match.
+          //Set the color to the bad color and
+          //notify the user.
+          pass2.style.backgroundColor = badColor;
+          message.style.color = badColor;
+          message.innerHTML = "Passwords Do Not Match!"
+      }
+  }
+  </script>
+
+  {% include 'footer.html' %}
