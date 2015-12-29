@@ -109,7 +109,6 @@ Both of these pieces of information can be found on the landing page of the Mail
 <pre><code>$ export SECRET_KEY="YOUR_SECRETKEY"
 $ export MAILGUN_SANDBOX_DOMAIN_URL="YOUR_SANDBOX_URL"
 $ export MAILGUN_API_KEY="YOUR_API_KEY"
-$ export SECRET_KEY="YOUR_SECRET_KEY"
 $ export TWILIO_NUMBER="+55555555555"
 </code></pre>
 
@@ -146,17 +145,11 @@ Ubuntu - 'apt-get install postgresql'.</p></li>
 
 <p><code>$ sudo pip install -r requirements.txt</code></p>
 
-<p><code>models.py</code> creates the tables in the database. Before you run it, comment this 2 lines on <code>app.py</code>:</p>
-
-<pre><code>from views import *
-del session
-</code></pre>
-
 <ul>
-<li>Run <code>models.py</code> on Terminal, to create the tables in the database:</li>
+<li>Run <code>create_models.py</code> on Terminal, to create the tables in the database:</li>
 </ul>
 
-<p><code>$ python models.py</code></p>
+<p><code>$ python create_models.py</code></p>
 
 <p>It will ask you for your email to create the first Admin user. Copy the <em>temporary password</em> given. You will need that to login and have access to <code>/admin</code></p>
 
@@ -204,15 +197,16 @@ Authentication successful.
 
 <p><code>$ git remote -v</code></p>
 
+<p>Now every time you push something to Github with <code>git push</code>, you will have to push again to Heroku with <code>git push heroku</code> if you want it deployed. You can setup a <a href="https://devcenter.heroku.com/articles/github-integration">Github/Heroku integration</a> if you want to automate this process.</p>
+
 <ul>
-<li>Again, let's keep your keys and number as environment variables, this time at Heroku:</li>
+<li>First things first, let's keep your keys and number as environment variables, this time at Heroku:</li>
 </ul>
 
-<pre><code>$ heroku config:set MAILGUN_SANDBOX_DOMAIN_URL="YOUR_SANDBOX_URL"
+<pre><code>$ heroku config:add SECRET_KEY="YOUR_SECRET_KEY"
+$ heroku config:set MAILGUN_SANDBOX_DOMAIN_URL="YOUR_SANDBOX_URL"
 $ heroku config:set MAILGUN_API_KEY="YOUR_API_KEY"
 $ heroku config:set TWILIO_NUMBER="+55555555555"
-$ heroku config:add SECRET_KEY="YOUR_SECRET_KEY"
-$ heroku config:add TWILIO_NUMBER="YOUR_TWILIO_NUMBER"
 </code></pre>
 
 <ul>
@@ -239,42 +233,12 @@ db = SQLAlchemy(app)
 
 <p>It means that when you run <code>app.py</code> locally, it will look for DATABASE_URL, fail, then look for the database on localhost.</p>
 
-<p>Before you run <code>models.py</code> to create the tables in the database, don't forget to comment this 2 lines on <code>app.py</code>:</p>
-
-<pre><code>from views import *
-del session
-</code></pre>
-
 <ul>
-<li>Stage, commit and then push to Heroku:</li>
+<li>Let's get this code to Heroku:</li>
 </ul>
 
 <pre><code>$ git push heroku
 </code></pre>
-
-<p>Now every time you push something to Github with <code>git push</code>, you will have to push again to Heroku with <code>git push heroku</code> if you want it deployed. You can setup a <a href="https://devcenter.heroku.com/articles/github-integration">Github/Heroku integration</a> if you want to automate this process.</p>
-
-<ul>
-<li>Run <code>models.py</code> to create the tables in the database:</li>
-</ul>
-
-<p><code>$ heroku run python models.py</code></p>
-
-<p>Same thing: It will ask you for your email to create the first Admin user. Copy the <em>temporary password</em> given. You will need that to login and have access to <code>/admin</code>.</p>
-
-<ul>
-<li>Uncomment those 2 lines in <code>app.py</code> before you move forward.</li>
-</ul>
-
-<pre><code>from views import *
-del session
-</code></pre>
-
-<ul>
-<li>Stage, commit and then push to Heroku:</li>
-</ul>
-
-<p><code>$ git push heroku</code></p>
 
 <p>The response will look like this:</p>
 
@@ -301,7 +265,17 @@ remote:
 remote: Verifying deploy... done.
 </code></pre>
 
-<p>Go to <a href="https://your_app_name.herokuapp.com/login">https://your_app_name.herokuapp.com/login</a> and you should be able to login.</p>
+<p><a href="https://your_app_name.herokuapp.com/">https://your_app_name.herokuapp.com/</a> is your URL. But you're still have need to create te tables.</p>
+
+<ul>
+<li>Run <code>create_models.py</code> to create the tables in the database on Heroku:</li>
+</ul>
+
+<p><code>$ heroku run python create_models.py</code></p>
+
+<p>Same thing: It will ask you for your email to create the first Admin user. Copy the <em>temporary password</em> given. You will need that to login and have access to <code>/admin</code>.</p>
+
+<p>Now you're good to go: <a href="https://your_app_name.herokuapp.com/login">https://your_app_name.herokuapp.com/login</a></p>
 
 <p>If you want to populate the database: </p>
 
