@@ -51,7 +51,6 @@ Your SECRET_KEY is not from any external service. It is like a password. Use any
 $ export SECRET_KEY="YOUR_SECRETKEY"
 $ export MAILGUN_SANDBOX_DOMAIN_URL="YOUR_SANDBOX_URL"
 $ export MAILGUN_API_KEY="YOUR_API_KEY"
-$ export SECRET_KEY="YOUR_SECRET_KEY"
 $ export TWILIO_NUMBER="+55555555555"
 ```
 Note that the "export" is limited to the Terminal window you have open. You have to re-export every time you open a new window. (If this gets frustrating, see if you can figure out [autoenv.](https://github.com/kennethreitz/autoenv))
@@ -79,16 +78,10 @@ create database raffle;
 
 ```$ sudo pip install -r requirements.txt```
 
-`models.py` creates the tables in the database. Before you run it, comment this 2 lines on `app.py`:
 
-```
-from views import *
-del session
-```
+- Run `create_models.py` on Terminal, to create the tables in the database:
 
-- Run `models.py` on Terminal, to create the tables in the database:
-
-```$ python models.py```
+```$ python create_models.py```
 
 It will ask you for your email to create the first Admin user. Copy the *temporary password* given. You will need that to login and have access to `/admin`
 
@@ -131,14 +124,15 @@ Basically what happens here is that now you have one more remote git repo. If yo
 
 ```$ git remote -v```
 
-- Again, let's keep your keys and number as environment variables, this time at Heroku:
+Now every time you push something to Github with `git push`, you will have to push again to Heroku with `git push heroku` if you want it deployed. You can setup a [Github/Heroku integration](https://devcenter.heroku.com/articles/github-integration) if you want to automate this process.
+
+- First things first, let's keep your keys and number as environment variables, this time at Heroku:
 
 ```
+$ heroku config:add SECRET_KEY="YOUR_SECRET_KEY"
 $ heroku config:set MAILGUN_SANDBOX_DOMAIN_URL="YOUR_SANDBOX_URL"
 $ heroku config:set MAILGUN_API_KEY="YOUR_API_KEY"
 $ heroku config:set TWILIO_NUMBER="+55555555555"
-$ heroku config:add SECRET_KEY="YOUR_SECRET_KEY"
-$ heroku config:add TWILIO_NUMBER="YOUR_TWILIO_NUMBER"
 ```
 
 - Now let's set your [timezone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones):
@@ -164,37 +158,11 @@ db = SQLAlchemy(app)
 
 It means that when you run `app.py` locally, it will look for DATABASE_URL, fail, then look for the database on localhost.
 
-Before you run `models.py` to create the tables in the database, don't forget to comment this 2 lines on `app.py`:
-
-```
-from views import *
-del session
-```
-
-- Stage, commit and then push to Heroku:
+- Let's get this code to Heroku:
 
 ```
 $ git push heroku
 ```
-
-Now every time you push something to Github with `git push`, you will have to push again to Heroku with `git push heroku` if you want it deployed. You can setup a [Github/Heroku integration](https://devcenter.heroku.com/articles/github-integration) if you want to automate this process.
-
-- Run `models.py` to create the tables in the database:
-
-```$ heroku run python models.py```
-
-Same thing: It will ask you for your email to create the first Admin user. Copy the *temporary password* given. You will need that to login and have access to `/admin`.
-
-- Uncomment those 2 lines in `app.py` before you move forward.
-
-```
-from views import *
-del session
-```
-
-- Stage, commit and then push to Heroku:
-
-```$ git push heroku```
 
 The response will look like this:
 
@@ -222,7 +190,16 @@ remote:
 remote: Verifying deploy... done.
 ```
 
-Go to https://your_app_name.herokuapp.com/login and you should be able to login.
+https://your_app_name.herokuapp.com/ is your URL. But you're still have need to create te tables.
+
+- Run `create_models.py` to create the tables in the database on Heroku:
+
+```$ heroku run python create_models.py```
+
+Same thing: It will ask you for your email to create the first Admin user. Copy the *temporary password* given. You will need that to login and have access to `/admin`.
+
+
+Now you're good to go: https://your_app_name.herokuapp.com/login
 
 If you want to populate the database: 
 
