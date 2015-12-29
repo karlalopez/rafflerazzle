@@ -23,10 +23,6 @@ ts = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://localhost/raffle')
 db = SQLAlchemy(app)
 
-
-# "InvalidRequestError: Table 'users' is already defined for this MetaData instance. 
-# Specify 'extend_existing=True'", 
-# If modules.py gives you this error above, comment the two lines below and try again.
 from views import *
 del session
 
