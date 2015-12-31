@@ -6,7 +6,7 @@ Please leave your comments and suggestions. Feedback and pull requests are very 
 
 This is a raffle manager.
 
-Let's say you run a local meetup, and every meetup you raffle a prize to your participants.This app is supposed to help you keep track of you raffles and participants, using Twilio to handle the communication.
+Let's say you run a local meetup, and every meetup you raffle a prize to your participants. This app is supposed to help you keep track of your raffles and participants, using Twilio to handle the communication.
 
 ### How it works
 
